@@ -1,0 +1,2 @@
+fotoğraftan metin çıkartmak için tesseract kullanılabilir (el yazıları için Google Cloud Vision API veya AWS Textract)
+
