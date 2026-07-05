@@ -60,6 +60,17 @@ export default function PublicLayout() {
     outline: 'none',
   });
 
+  const getHomeLink = (hash) => {
+    const isProdPages = window.location.hostname.endsWith('.github.io');
+    const path = window.location.pathname;
+    if (!isProdPages) {
+      return `/${hash}`;
+    }
+    const segments = path.split('/').filter(Boolean);
+    const repoName = segments.length > 0 ? segments[0] : '';
+    return `/${repoName}/${hash}`;
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', minHeight: '100vh', backgroundColor: 'var(--bg-main)', fontFamily: 'var(--font-sans)' }}>
       
@@ -220,9 +231,9 @@ export default function PublicLayout() {
           paddingBottom: isMobile ? '10px' : '0',
           paddingRight: isMobile ? '0' : '20px'
         }}>
-          <a href="/#" style={linkStyle(isHomeActive)}>Hakkımda</a>
-          <a href="/#egitim" style={linkStyle(isEducationActive)}>Akademik Geçmiş</a>
-          <a href="/#calismalar" style={linkStyle(isProjectsActive)}>Çalışmalar & Yayınlar</a>
+          <a href={getHomeLink('')} style={linkStyle(isHomeActive)}>Hakkımda</a>
+          <a href={getHomeLink('#egitim')} style={linkStyle(isEducationActive)}>Akademik Geçmiş</a>
+          <a href={getHomeLink('#calismalar')} style={linkStyle(isProjectsActive)}>Çalışmalar & Yayınlar</a>
         </nav>
         
         {!isMobile && (
