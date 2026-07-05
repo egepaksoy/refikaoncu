@@ -6,7 +6,16 @@ import ProjectDetail from './pages/ProjectDetail';
 import PublicLayout from './pages/PublicLayout'; // Layout'u ekledik
 
 function App() {
-  const basename = window.location.pathname.startsWith('/refikacom') ? '/refikacom' : '/';
+  const getBasename = () => {
+    const path = window.location.pathname;
+    if (path === '/' || !window.location.hostname.endsWith('.github.io')) {
+      return '/';
+    }
+    const segments = path.split('/').filter(Boolean);
+    return segments.length > 0 ? `/${segments[0]}` : '/';
+  };
+
+  const basename = getBasename();
 
   return (
     <Router basename={basename}>
