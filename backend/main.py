@@ -21,12 +21,20 @@ app = FastAPI()
 
 # Kalıcı Veri Depolama Dizinleri (Render Persistent Disk desteği için)
 DATA_DIR = os.getenv("DATA_DIR", ".")
-RESUME_FILE = os.path.join(DATA_DIR, "resume_data.json")
-PROJECTS_FILE = os.path.join(DATA_DIR, "projects_data.json")
-UPLOADS_DIR = os.path.join(DATA_DIR, "uploads")
+try:
+    UPLOADS_DIR = os.path.join(DATA_DIR, "uploads")
+    os.makedirs(UPLOADS_DIR, exist_ok=True)
+    RESUME_FILE = os.path.join(DATA_DIR, "resume_data.json")
+    PROJECTS_FILE = os.path.join(DATA_DIR, "projects_data.json")
+except PermissionError:
+    # Eğer belirtilen DATA_DIR dizinine yazma yetkisi yoksa (Free plandaki /data gibi) yerel klasöre dön
+    print(f"UYARI: {DATA_DIR} dizinine yazma yetkisi yok. Yerel dizine ('.') geri dönülüyor.")
+    DATA_DIR = "."
+    RESUME_FILE = "resume_data.json"
+    PROJECTS_FILE = "projects_data.json"
+    UPLOADS_DIR = "uploads"
+    os.makedirs(UPLOADS_DIR, exist_ok=True)
 
-# Fotoğrafların kaydedileceği klasörü oluştur
-os.makedirs(UPLOADS_DIR, exist_ok=True)
 # Bu klasörü dışarıya (frontend'e) statik olarak aç
 app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 
