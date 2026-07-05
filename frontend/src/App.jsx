@@ -6,8 +6,10 @@ import ProjectDetail from './pages/ProjectDetail';
 import PublicLayout from './pages/PublicLayout'; // Layout'u ekledik
 
 function App() {
+  const basename = window.location.pathname.startsWith('/refikacom') ? '/refikacom' : '/';
+
   return (
-    <Router>
+    <Router basename={basename}>
       <Routes>
         
         {/* Ziyaretçilerin göreceği sayfalar PublicLayout iskeleti içinde çalışır */}
